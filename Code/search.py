@@ -76,11 +76,35 @@ def bfs(state0):
             state_new, path_new = move(state, path, direction)
             if state_new and str(state_new) not in closed:
                 if state_new == [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "_"]]:
-                    return len(closed)+len(states), time.time()-start_time, path_new
+                    return len(closed), time.time()-start_time, path_new
 
                 nums += 1
                 paths.append(path_new)
                 states.append(state_new)
+
+
+#%% main body of solver function
+def solver(data_path, method):
+    # load data
+    state0 = np.loadtxt(data_path, "str").tolist()
+
+    # find solution
+    if method == "BFS":
+        res = bfs(state0)
+    elif method == "IDS":
+        res = ids(state0)
+    elif method == "h1":
+        res = h1(state0)
+    elif method == "h2":
+        res = h2(state0)
+    elif method == "h3":
+        res = h3(state0)
+
+    print("Total nodes generated:", res[0])
+    print("Total time taken:", round(res[1], 2), "sec")
+    print("Path length:", len(res[2]))
+    print("Path:", res[2])
+    return res
 
 
 #%%
@@ -92,23 +116,13 @@ if __name__ == '__main__':
     if len(sys.argv) == 3:
         data_path = sys.argv[1]
         method = sys.argv[2]
-
+        print("The data used is:\t", data_path)
+        print("The method used is:\t", method, "\n")
+        res = solver(data_path, method)
     else:
-        print("Please provide the path for the data and the method will be applied.")
-
-
-    # data_path = "./Data/Part2/S1.txt"
-    data = np.loadtxt(data_path, "str").tolist()
-    res = bfs(data)
-
-    print("Total nodes generated:", res[0])
-    print("Total time taken:", round(res[1], 2), "sec")
-    print("Path length:", len(res[2]))
-    print("Path:", res[2])
-
-
-
-
-
-
-
+        print("\nPlease provide the path for the data and the method desired. \n")
+        data_path = "../Data/Part2/S1.txt"
+        method = "BFS"
+        print("The data used is:\t", data_path)
+        print("The method used is:\t", method, "\n")
+        res = solver(data_path, method)
