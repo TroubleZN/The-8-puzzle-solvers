@@ -63,6 +63,10 @@ def bfs(state0):
     nums = 0
     while 1:
         if time.time()-start_time >= 60*15:
+            print("Total nodes generated: <<??>>")
+            print("Total time taken: >15 min")
+            print("Path length: Timed out.")
+            print("Path: Timed out.")
             return False
 
         if not states:
@@ -83,10 +87,32 @@ def bfs(state0):
                 states.append(state_new)
 
 
+#%% check the solvability of the problem
+def check_solvability(state0):
+    state0_f = [i for a in state0 for i in a]
+    n_inv = 0
+    for i in range(9):
+        for j in range(i+1, 9):
+            if state0_f[i] > state0_f[j]:
+                n_inv += 1
+    if n_inv % 2:
+        return False
+    else:
+        return True
+
+
 #%% main body of solver function
 def solver(data_path, method):
     # load data
     state0 = np.loadtxt(data_path, "str").tolist()
+
+    # check solvability
+    solvability = check_solvability(state0)
+    if not solvability:
+        print("The inputted puzzle is not solvable:")
+        for a in state0:
+            print(*a)
+        return False
 
     # find solution
     if method == "BFS":
