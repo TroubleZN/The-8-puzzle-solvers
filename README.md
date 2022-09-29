@@ -35,7 +35,7 @@ __function__ DEPTH-LIMITED-SEARCH(_problem_, _l_) __returns__ a solution, or fai
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;add _child_ to __frontier__  
 &emsp;__return__  _solution_  
 
-## 2.ITERATIVE-DEEPENING-SEARCH
+## 3. ITERATIVE-DEEPENING-SEARCH
 
 __function__ ITERATIVE-DEEPENING-SEARCH(_problem_) __returns__ a solution, or failure  
 &emsp;__for__ _depth_ = 0 to &infin; __do__  
