@@ -1,6 +1,6 @@
 # The-8-puzzle-solvers
 
-## BREADTH-FIRST-SEARCH
+## 1. BREADTH-FIRST-SEARCH
 
 __function__ BREADTH-FIRST-SEARCH(_problem_) __returns__ a solution, or failure  
 &emsp;__if__ problem's initial state is a goal __then return__ empty path to initial state  
@@ -20,7 +20,7 @@ __function__ BREADTH-FIRST-SEARCH(_problem_) __returns__ a solution, or failure
 
 
 
-## ITERATIVE-DEEPENING-SEARCH
+## 2.ITERATIVE-DEEPENING-SEARCH
 
 __function__ ITERATIVE-DEEPENING-SEARCH(_problem_) __returns__ a solution, or failure  
 &emsp;__for__ _depth_ = 0 to &infin; __do__  
