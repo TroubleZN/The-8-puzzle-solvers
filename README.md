@@ -19,7 +19,7 @@ __function__ BREADTH-FIRST-SEARCH(_problem_) __returns__ a solution, or failure
 &emsp;__return__  _solution_
 
 
-# 2. DEPTH-LIMITED-SEARCH
+## 2. DEPTH-LIMITED-SEARCH
 
 __function__ DEPTH-LIMITED-SEARCH(_problem_, _l_) __returns__ a solution, or failure, or cutoff  
 &emsp;_frontier_ &larr; a FIFO queue initially containing one path, for the _problem_'s initial state  
