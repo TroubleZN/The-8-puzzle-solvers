@@ -87,6 +87,8 @@ def bfs(state0):
                 states.append(state_new)
 
 
+
+
 #%% check the solvability of the problem
 def check_solvability(state0):
     state0_f = [i for a in state0 for i in a]
@@ -102,9 +104,9 @@ def check_solvability(state0):
 
 
 #%% main body of solver function
-def solver(data_path, method):
+def solver(fPath, alg):
     # load data
-    state0 = np.loadtxt(data_path, "str").tolist()
+    state0 = np.loadtxt(fPath, "str").tolist()
 
     # check solvability
     solvability = check_solvability(state0)
@@ -115,16 +117,19 @@ def solver(data_path, method):
         return False
 
     # find solution
-    if method == "BFS":
+    res = [0, 0, ""]
+    if alg == "BFS":
         res = bfs(state0)
-    elif method == "IDS":
+    elif alg == "IDS":
         res = ids(state0)
-    elif method == "h1":
+    elif alg == "h1":
         res = h1(state0)
-    elif method == "h2":
+    elif alg == "h2":
         res = h2(state0)
-    elif method == "h3":
+    elif alg == "h3":
         res = h3(state0)
+    else:
+        print("Algorithm is not valid!")
 
     print("Total nodes generated:", res[0])
     print("Total time taken:", round(res[1], 2), "sec")
@@ -139,16 +144,25 @@ if __name__ == '__main__':
     # print("You entered: " + var)
     import sys
 
-    if len(sys.argv) == 3:
-        data_path = sys.argv[1]
-        method = sys.argv[2]
-        print("The data used is:\t", data_path)
-        print("The method used is:\t", method, "\n")
-        res = solver(data_path, method)
+    pars = sys.argv[1:]
+    n_pars = len(pars)
+
+    if "--fPath" not in pars or "--alg" not in pars or pars[0] == "-h" or len(pars) != 4:
+        print("Please provide the path for the data and the method desired.")
+        print("8puz.py --fPath file_path --alg algorithm")
+        # data_path = "../Data/Part2/S1.txt"
+        # method = "BFS"
+        # print("The data used is:\t", data_path)
+        # print("The method used is:\t", method, "\n")
+        # res = solver(data_path, method)
     else:
-        print("\nPlease provide the path for the data and the method desired. \n")
-        data_path = "../Data/Part2/S1.txt"
-        method = "BFS"
+        for i in range(n_pars):
+            if pars[i] == "--fPath" and i+1 < n_pars:
+                data_path = pars[i+1]
+            if pars[i] == "--alg" and i+1 < n_pars:
+                method = pars[i+1]
         print("The data used is:\t", data_path)
         print("The method used is:\t", method, "\n")
         res = solver(data_path, method)
+
+

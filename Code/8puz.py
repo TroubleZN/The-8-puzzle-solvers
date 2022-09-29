@@ -1,7 +1,7 @@
 #%% load packages
-import numpy as np
-
-
+import sys
+par = sys.argv[1:]
+print(par[0],par[1])
 
 
 
