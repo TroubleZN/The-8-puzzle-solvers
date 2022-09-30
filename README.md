@@ -1,4 +1,5 @@
 # The-8-puzzle-solvers
+Five solvers are implemented using Python. 
 
 ## 1. BREADTH-FIRST-SEARCH
 
