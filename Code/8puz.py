@@ -54,7 +54,7 @@ def move(state, path, direction):
     return state, path
 
 
-#%% BFS
+#%% BREADTH-FIRST-SEARCH
 def bfs(state0):
     start_time = time.time()
     closed = set()
@@ -72,9 +72,10 @@ def bfs(state0):
         if not states:
             return False
 
-        state = states.pop(0)
-        path = paths.pop(0)
+        state = states.pop()
+        path = paths.pop()
         closed.add(str(state))
+        nums += 1
 
         for direction in ["R", "L", "U", "D"]:
             state_new, path_new = move(state, path, direction)
@@ -82,16 +83,52 @@ def bfs(state0):
                 if state_new == [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "_"]]:
                     return len(closed), time.time()-start_time, path_new
 
-                nums += 1
                 paths.append(path_new)
                 states.append(state_new)
 
 
+#%% DEPTH-LIMITED-SEARCH
+def dls(state0, depth):
+    start_time = time.time()
+    frontier = [state0]
+    paths = [""]
+    cutoff = False
+    closed = set()
+    nums = 0
+    while len(frontier) > 0:
+        state = frontier.pop()
+        path = paths.pop()
+        closed.add(str(state))
+        nums += 1
+        if len(path) == depth:
+            cutoff = True
+        else:
+            for direction in ["R", "L", "U", "D"]:
+                state_new, path_new = move(state, path, direction)
+                if state_new and str(state_new) not in closed:
+                    if state_new == [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "_"]]:
+                        return cutoff, nums, time.time() - start_time, path_new
+
+                    paths.append(path_new)
+                    frontier.append(state_new)
+    return cutoff, nums
+
+#%% ITERATIVE-DEEPENING-SEARCH
+def ids(state0):
+    depth = 0
+    nums = 0
+    while 1:
+        res = dls(state0, depth)
+        nums += res[1]
+        print(depth,nums)
+        if not res[0]:
+            return nums, res[2:]
+        depth += 5
 
 
 #%% check the solvability of the problem
 def check_solvability(state0):
-    state0_f = [i for a in state0 for i in a]
+    state0_f = [s for a in state0 for s in a]
     n_inv = 0
     for i in range(9):
         for j in range(i+1, 9):
@@ -164,5 +201,9 @@ if __name__ == '__main__':
         print("The data used is:\t", data_path)
         print("The method used is:\t", method, "\n")
         res = solver(data_path, method)
+
+    data_path = "../Data/Part2/S1.txt"
+    state0 = np.loadtxt(data_path, "str").tolist()
+    ids(state0)
 
 
