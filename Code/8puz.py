@@ -107,24 +107,48 @@ def dls(state0, depth):
                 state_new, path_new = move(state, path, direction)
                 if state_new and str(state_new) not in closed:
                     if state_new == [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "_"]]:
-                        return cutoff, nums, time.time() - start_time, path_new
+                        return time.time() - start_time, nums, path_new
 
                     paths.append(path_new)
                     frontier.append(state_new)
-    return cutoff, nums
+    return "cutoff", nums
+
+def dls2(state0, depth):
+    start_time = time.time()
+
+    def recursive_dls(state, path, limit):
+        if state == [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "_"]]:
+            return path
+        elif limit == 0:
+            return "cutoff"
+        else:
+            cutoff_occurred = False
+            for direction in ["R", "L", "U", "D"]:
+                state_new, path_new = move(state, path, direction)
+                if state_new:
+                    result = recursive_dls(state_new, path_new, limit - 1)
+                    if result == "cutoff":
+                        cutoff_occurred = True
+                    elif result is not None:
+                        return result
+            return "cutoff" if cutoff_occurred else None
+
+    return recursive_dls(state0, "", depth)
+
 
 
 #%% ITERATIVE-DEEPENING-SEARCH
 def ids(state0):
+    start_time = time.time()
     depth = 0
     nums = 0
     while 1:
         res = dls(state0, depth)
         nums += res[1]
         print(depth,nums)
-        if not res[0]:
-            return nums, res[2:]
-        depth += 5
+        if res[0] != "cutoff":
+            return nums, res[2:], time.time() - start_time
+        depth += 1
 
 
 #%% check the solvability of the problem
@@ -205,6 +229,6 @@ if __name__ == '__main__':
 
     data_path = "../Data/Part2/S1.txt"
     state0 = np.loadtxt(data_path, "str").tolist()
-    ids(state0)
+    dls2(state0, 3)
 
 
