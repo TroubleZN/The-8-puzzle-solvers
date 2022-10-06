@@ -72,8 +72,8 @@ def bfs(state0):
         if not states:
             return False
 
-        state = states.pop()
-        path = paths.pop()
+        state = states.pop(0)
+        path = paths.pop(0)
         closed.add(str(state))
         nums += 1
 
@@ -143,12 +143,100 @@ def ids(state0):
     depth = 0
     nums = 0
     while 1:
+        if time.time()-start_time >= 60*15:
+            print("Total nodes generated: <<??>>")
+            print("Total time taken: >15 min")
+            print("Path length: Timed out.")
+            print("Path: Timed out.")
+            return False
+
         res = dls(state0, depth)
         nums += res[1]
-        print(depth,nums)
+        print(depth, nums)
         if res[0] != "cutoff":
-            return nums, res[2:], time.time() - start_time
+            return nums, time.time() - start_time, res[2]
         depth += 1
+
+
+#%% misplaced title heuristic. (h1)
+def h1(state):
+    n = 0
+    index = 1
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] != str(index) and i+j != 4:
+                n += 1
+            index += 1
+    return n
+
+
+#%% Manhattan distance heuristic. (h2)
+def h2(state):
+    distance = 0
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] != "_":
+                num = int(state[i][j]) - 1
+                row = num // 3
+                col = num % 3
+                distance += abs(row - i) + abs(col - j)
+    return distance
+
+
+#%% My heuristic. (h3)
+def h3(state):
+    print(state)
+    return
+
+
+#%% A* search
+def H(state, h):
+    if h == 1:
+        return h1(state)
+    elif h == 2:
+        return h2(state)
+    else:
+        return h3(state)
+
+
+def A_star(state0, h):
+    start_time = time.time()
+    closed = set()
+    paths = [""]
+    states = [state0]
+    Hs = [H(state0, h)]
+    nums = 0
+    while 1:
+        if time.time()-start_time >= 60*15:
+            print("Total nodes generated: <<??>>")
+            print("Total time taken: >15 min")
+            print("Path length: Timed out.")
+            print("Path: Timed out.")
+            return False
+
+        if not states:
+            return False
+
+        zipped = sorted(zip(Hs, paths, states))
+        Hs, paths, states = zip(*zipped)
+
+        state = states.pop(0)
+        path = paths.pop(0)
+        Hs.pop(0)
+        closed.add(str(state))
+        nums += 1
+
+        for direction in ["R", "L", "U", "D"]:
+            state_new, path_new = move(state, path, direction)
+            if state_new and str(state_new) not in closed:
+                if state_new == [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "_"]]:
+                    return len(closed), time.time()-start_time, path_new
+
+                paths.append(path_new)
+                states.append(state_new)
+                Hs.append(H(state_new, h))
+
+
 
 
 #%% check the solvability of the problem
@@ -229,6 +317,10 @@ if __name__ == '__main__':
 
     data_path = "../Data/Part2/S1.txt"
     state0 = np.loadtxt(data_path, "str").tolist()
-    dls2(state0, 3)
+    h1(state0)
+    A_star(state0, 1)
+
+    # dls(state0, 3)
+    # ids(state0)
 
 
