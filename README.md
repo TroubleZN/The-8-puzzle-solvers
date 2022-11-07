@@ -70,7 +70,7 @@ __function__ ITERATIVE-DEEPENING-SEARCH(_problem_) __returns__ a solution, or fa
 &emsp;&emsp;&emsp;__if__ _result_ &ne; cutoff __then return__ _result_
 
 
-## GRAPH-SEARCH
+## 4. GRAPH-SEARCH
 
 __function__ GRAPH-SEARCH(_problem_) __returns__ a solution, or failure  
 &emsp;_frontier_ &larr; a queue initially containing one path, for the _problem_'s initial state  
@@ -97,5 +97,25 @@ __function__ EXPAND(_problem, parent_) __returns__ a list of nodes
 &emsp;&emsp;&emsp;add _node_ to _nodes_  
 &emsp;__return__ _nodes_  
 
+## 5. RECURSIVE-BEST-FIRST-SEARCH
 
-reference: \url{https://github.com/aimacode}
+__function__ RECURSIVE-BEST-FIRST-SEARCH(_problem_) __returns__ a solution, or failure  
+&emsp;__return__ RBFS(_problem_,MAKE\-NODE(_problem_.INITIAL\-STATE),&infin;)  
+
+__function__ RBFS(_problem_,_node_,_f\_limit_) __returns__ a solution, or failure and a new _f_\-cost limit  
+&emsp;if _problem_.GOAL-TEST(_node_.STATE) __then return__ SOLUTION(_node_)  
+&emsp;_successors_ &larr; \[\]  
+&emsp;__for each__ _action_ __in__ _problem_.ACTIONS(_node_.STATE) __do__  
+&emsp;&emsp;&emsp;add CHILD-NODE(_problem_,_node_,_action_) into _successors_  
+&emsp;__if__ _successors_ is empty __then return__ _failure_,&infin;  
+&emsp;__for each__ _s_ __in__ _successors_ __do__ /\* update _f_ with value from previous search, if any \*/  
+&emsp;&emsp;&emsp;_s.f_ &larr; max(_s.g_ + _s.h_, _node.f_)  
+&emsp;__loop do__  
+&emsp;&emsp;&emsp;_best_ &larr; lowest _f_\-value node in _successors_  
+&emsp;&emsp;&emsp;__if__ _best.f_ > _f\_limit_ __then return__ _failure,best.f_  
+&emsp;&emsp;&emsp;_alternative_ &larr; the second-lowest _f_\-value among _successors_  
+&emsp;&emsp;&emsp;_result,best.f_ &larr; RBFS(_problem_,_best_,min(_f\_limit_,_alternative_))  
+&emsp;&emsp;&emsp;__if__ _result_ &ne; _failure_ __then return__ _result_  
+
+
+Reference: https://github.com/aimacode
