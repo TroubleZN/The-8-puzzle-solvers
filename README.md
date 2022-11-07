@@ -1,6 +1,24 @@
 # The-8-puzzle-solvers
 Five solvers are implemented using Python. 
 
+File structure:
+./
+./Data/
+./Data/Part2/
+./Data/Part3/
+./8puz.py
+./README.txt
+
+The solver can be called directly with:
+
+python ./8puz.py --fPath file_path --alg algorithm
+
+To automatically reproduce the results for Part 2 and 3:
+
+python ./8puz.py --Part2
+
+python ./8puz.py --Part3
+
 ## 1. BREADTH-FIRST-SEARCH
 
 __function__ BREADTH-FIRST-SEARCH(_problem_) __returns__ a solution, or failure  
