@@ -1,13 +1,13 @@
 # The-8-puzzle-solvers
 Five solvers are implemented using Python. 
 
-File structure:
-./
-./Data/
-./Data/Part2/
-./Data/Part3/
-./8puz.py
-./README.txt
+File structure:\\
+./\\
+./Data/\\
+./Data/Part2/\\
+./Data/Part3/\\
+./8puz.py\\
+./README.txt\\
 
 The solver can be called directly with:
 
